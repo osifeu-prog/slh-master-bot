@@ -7,3 +7,4 @@ COPY slh_master_bot.py .
 # COPY .env .   <--- הסר שורה זו
 COPY .env.example .env   # יצור .env ריק אם לא קיים
 CMD ["python", "-u", "slh_master_bot.py"]
+
