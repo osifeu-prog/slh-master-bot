@@ -1,7 +1,7 @@
 ﻿# === SLH MASTER BOT v3.14 FINAL  RAILWAY READY + FULL FEATURES ===
 import asyncio, logging, os, subprocess, json, functools, datetime, csv
 import httpx
-from dotenv import load_dotenv; from bsc_client import get_token_price
+from dotenv import load_dotenv; from bsc_client import get_token_price; from bsc_client import get_token_price
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.filters import Command
@@ -511,6 +511,22 @@ async def cmd_price(msg: Message):
     else:
         await msg.answer("⚠️ Could not fetch price. Try again later.")
 
+
+@dp.message(Command("price"))
+async def cmd_price(msg: Message):
+    data = await get_token_price()
+    if data:
+        await msg.answer(
+            f"<b>💲 SLH Price (Live)</b>\n\n"
+            f"• SLH/BNB: {data['slh_bnb']} BNB\n"
+            f"• BNB/USD: ${data['bnb_usd']}\n"
+            f"• SLH/USD: ${data['slh_usd']}\n\n"
+            f"<i>Source: CoinGecko (BNB) + IDO listing price</i>",
+            parse_mode=ParseMode.HTML
+        )
+    else:
+        await msg.answer("⚠️ Could not fetch price. Try again later.")
+
 # ====================== AI Chat ======================
 @dp.message(F.text & ~F.text.startswith("/"))
 async def on_text(msg: Message):
@@ -564,4 +580,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
