@@ -1,0 +1,4 @@
+MASTER_BOT_TOKEN=:\SLH_MASTER_BOT\.env
+ALLOWED_IDS=224223270,8789977826
+RAILWAY_API_URL=https://slh-fastapi-production.up.railway.app
+GROQ_API_KEY=
