@@ -1,1 +1,1 @@
-﻿$MyInvocation.MyCommand.Definition | Set-Content slh-cli.ps1 -Encoding utf8 -Force
+﻿D:\SLH_MASTER_BOT\slh-cli.ps1
