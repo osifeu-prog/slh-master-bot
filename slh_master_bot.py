@@ -2,6 +2,8 @@
 import logging
 import os
 import sys
+from datetime import datetime
+
 sys.path.append(os.getcwd())
 
 from aiogram import Bot, Dispatcher
@@ -9,6 +11,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
+
 import redis as redis_lib
 
 from handlers import menu
@@ -32,6 +35,7 @@ def init_redis():
     return None
 
 r = init_redis()
+
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 if not TOKEN:
     log.error("❌ TELEGRAM_TOKEN not set")
