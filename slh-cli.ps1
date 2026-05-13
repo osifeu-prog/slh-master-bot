@@ -46,3 +46,98 @@ Write-Host @"
   4. Check health with 'railway logs'.
  ---------------------------------------------------------
 "@ -ForegroundColor Cyan
+
+# ============================================================
+# SESSION & LOGGING SYSTEM (Agent Collaboration)
+# ============================================================
+
+$global:SessionFile = "$PSScriptRoot\session_log.json"
+
+function Start-AgentSession {
+    $agentName = Read-Host "Enter your agent name (e.g., Osif, Claude, DevBot)"
+    $session = @{
+        agent = $agentName
+        start = (Get-Date).ToString("o")
+        actions = @()
+    }
+    if (Test-Path $global:SessionFile) {
+        $all = Get-Content $global:SessionFile -Raw | ConvertFrom-Json
+    } else {
+        $all = @()
+    }
+    $all += $session
+    $all | ConvertTo-Json -Depth 10 | Set-Content $global:SessionFile -Encoding UTF8
+    Write-Host "✅ Session started for agent: $agentName at $(Get-Date)" -ForegroundColor Green
+    Write-Host "📝 Use 'log <message>' to record actions." -ForegroundColor Cyan
+}
+
+function Log-Action {
+    param([string]$message)
+    if (-not (Test-Path $global:SessionFile)) {
+        Write-Host "❌ No active session. Run 'start-session' first." -ForegroundColor Red
+        return
+    }
+    $all = Get-Content $global:SessionFile -Raw | ConvertFrom-Json
+    $last = $all[-1]
+    $last.actions += @{
+        time = (Get-Date).ToString("o")
+        action = $message
+    }
+    $all[-1] = $last
+    $all | ConvertTo-Json -Depth 10 | Set-Content $global:SessionFile -Encoding UTF8
+    Write-Host "📝 Logged: $message" -ForegroundColor Green
+}
+
+function Show-SessionStatus {
+    if (-not (Test-Path $global:SessionFile)) {
+        Write-Host "No session log found." -ForegroundColor Yellow
+        return
+    }
+    $all = Get-Content $global:SessionFile -Raw | ConvertFrom-Json
+    $last = $all[-1]
+    Write-Host "`n👤 Current agent: $($last.agent)" -ForegroundColor Cyan
+    Write-Host "🕒 Started at: $($last.start)" -ForegroundColor Yellow
+    Write-Host "📋 Actions this session: $($last.actions.Count)" -ForegroundColor Magenta
+    if ($last.actions.Count -gt 0) {
+        Write-Host "Latest action: $($last.actions[-1].action)" -ForegroundColor White
+    }
+}
+
+function Daily-Snapshot {
+    $date = Get-Date -Format "yyyy-MM-dd"
+    $snapshotDir = "$PSScriptRoot\daily_snapshots"
+    if (-not (Test-Path $snapshotDir)) { New-Item -ItemType Directory -Path $snapshotDir -Force | Out-Null }
+    $snapshotFile = "$snapshotDir\state_$date.json"
+    $state = @{
+        date = (Get-Date).ToString("o")
+        todo = Get-Content "$PSScriptRoot\TODO.md" -Raw -ErrorAction SilentlyContinue
+        railway_status = (railway status 2>&1 | Out-String)
+        docker_containers = (docker ps -a --format "table {{.Names}}\t{{.Status}}" | Out-String)
+        session_log = Get-Content $global:SessionFile -Raw -ErrorAction SilentlyContinue
+    }
+    $state | ConvertTo-Json -Depth 5 | Set-Content $snapshotFile -Encoding UTF8
+    Write-Host "📸 Daily snapshot saved to $snapshotFile" -ForegroundColor Green
+}
+
+# Override prompt to show session agent (optional, uncomment if desired)
+function prompt {
+    $path = Split-Path -Leaf $pwd
+    $sessionInfo = ""
+    if (Test-Path $global:SessionFile) {
+        $all = Get-Content $global:SessionFile -ErrorAction SilentlyContinue | ConvertFrom-Json
+        if ($all -and $all.Count -gt 0) {
+            $agent = $all[-1].agent
+            $sessionInfo = " [$agent]"
+        }
+    }
+    Write-Host "`n  ██████  ██      ██   ██" -ForegroundColor Cyan -NoNewline
+    Write-Host "`n ██       ██      ██   ██" -ForegroundColor Cyan -NoNewline
+    Write-Host "`n  █████   ██      ███████" -ForegroundColor Cyan -NoNewline
+    Write-Host "`n      ██  ██      ██   ██" -ForegroundColor Cyan -NoNewline
+    Write-Host "`n ██████   ███████ ██   ██  v8.0 COLLABORATIVE" -ForegroundColor Cyan
+    Write-Host " ---------------------------------------------------------" -ForegroundColor DarkGray
+    Write-Host " [ OWNER: OSIF ] | [ STATUS: ONLINE$sessionInfo ]" -ForegroundColor Yellow
+    Write-Host " ---------------------------------------------------------" -ForegroundColor DarkGray
+    Write-Host " COMMANDS: st, todo, power, log, status, session, snapshot, deploy, reload" -ForegroundColor White
+    "🚀 [SLH-MASTER] $path > "
+}

@@ -1,0 +1,33 @@
+{
+    "date":  "2026-05-13_1636",
+    "docker":  "open-webui\r\nslh-db-v3\r\nslh-redis-v3\r\nbaffo-bot\r\nbaffo-http\r\n",
+    "todo":  {
+                 "value":  "# ?? SLH MASTER TODO  ?? ??????? ??? ???????\n\n## ?? ?????  ???? ?????\n- [ ] **Redis Authentication**  ????? ?? ?-REDIS_URL ???? ?-Railway (???? ?????) ??????? ?-candidates.\n- [ ] **Deploy bot clean**  ????? `railway up --service slh-master-bot` ??????? ????? ?? `Redis connected`.\n- [ ] **FastAPI Redis**  ???? ????? ???? ?? ?-slh-fastapi.\n\n## ?? ?????? ?????? (Backlog)\n- [ ] HEALTH CHECK: ????? `st` ?????? ??? ???????? ?-Railway `Online`.\n- [ ] DATABASE SYNC: ????? ?-FastAPI ????? ?-PostgreSQL.\n- [ ] CLEAN DEPLOY: ????? ?? ????? \u0027os error 32\u0027 (?? ????? ?????? ????? ??????).\n- [ ] FINAL REPORT: ????? ??? ????? ???.\n\n## ?? ????\n- [ ] ????? ??????? ????? (`slh_master_bot_backup_*`, `*BROKEN*`).\n- [ ] ???? ?? ??? ????????? ?-`/remember` ??? ???? (???????).\n- [ ] ?????? ?????? ???? ???? ?????? ??????.\n- [ ] ????? `privacy mode` ( `/setprivacy` ?-@BotFather).\r\n-   [   ]   N e w   t a s k   d e s c r i p t i o n \r \n - [x] Redis connection fixed\n- [ ] Resolve TelegramConflictError (in progress)\n- [ ] Test /menu in Telegram\n- [ ] Add /power command (show commits \u0026 tasks)\n- [ ] Add /snapshot command (save system state)\n- [ ] Modularize remaining handlers (admin, memory, investment)\n- [ ] Fix slh-fastapi (currently crashed)",
+                 "PSPath":  "D:\\SLH_MASTER_BOT\\TODO.md",
+                 "PSParentPath":  "D:\\SLH_MASTER_BOT",
+                 "PSChildName":  "TODO.md",
+                 "PSDrive":  {
+                                 "CurrentLocation":  "SLH_MASTER_BOT",
+                                 "Name":  "D",
+                                 "Provider":  "Microsoft.PowerShell.Core\\FileSystem",
+                                 "Root":  "D:\\",
+                                 "Description":  "New Volume",
+                                 "MaximumSize":  null,
+                                 "Credential":  "System.Management.Automation.PSCredential",
+                                 "DisplayRoot":  null
+                             },
+                 "PSProvider":  {
+                                    "ImplementingType":  "Microsoft.PowerShell.Commands.FileSystemProvider",
+                                    "HelpFile":  "System.Management.Automation.dll-Help.xml",
+                                    "Name":  "FileSystem",
+                                    "PSSnapIn":  "Microsoft.PowerShell.Core",
+                                    "ModuleName":  "Microsoft.PowerShell.Core",
+                                    "Module":  null,
+                                    "Description":  "",
+                                    "Capabilities":  52,
+                                    "Home":  "C:\\Users\\Giga Store",
+                                    "Drives":  "C D S"
+                                },
+                 "ReadCount":  1
+             }
+}
