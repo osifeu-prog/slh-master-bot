@@ -534,7 +534,7 @@ async def on_text(msg: Message):
         prompt = msg.text
     else:
         user_text = msg.text or ""
-        mentioned = f'@{bot.username}'.lower() in user_text.lower()
+        mentioned = (await bot.get_me()).username.lower() in user_text.lower()
         has_question = "?" in user_text
         direct_call = any(word in user_text.lower() for word in ["בוט", "slh", "קלוד", "claude"])
         if not mentioned and not has_question and not direct_call:
