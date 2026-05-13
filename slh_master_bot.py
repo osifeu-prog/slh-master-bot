@@ -1,4 +1,7 @@
-﻿import asyncio
+﻿import sys
+import os
+sys.path.append(os.getcwd())
+import asyncio
 
 from handlers import menu
 import logging
@@ -64,3 +67,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+

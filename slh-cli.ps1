@@ -1,51 +1,48 @@
-function Show-SLH-Dashboard {
-    Clear-Host
-    Write-Host "  ??????+ ??+      ??+  ??+" -ForegroundColor Cyan
-    Write-Host " ??+----+ ???      ???  ???" -ForegroundColor Cyan
-    Write-Host " +?????+  ???      ????????" -ForegroundColor Cyan
-    Write-Host "  +---??+ ???      ??+--???" -ForegroundColor Cyan
-    Write-Host " ??????++ ???????+ ???  ???" -ForegroundColor Cyan
-    Write-Host " +-----+  +------+ +-+  +-+ v2.2" -ForegroundColor Cyan
-    Write-Host " ---------------------------------------------------------"
-    Write-Host " [ OWNER: OSIF ] | [ SSoT: GitHub + Railway ]" -ForegroundColor Yellow
-    Write-Host " ---------------------------------------------------------"
-    
-    if (Test-Path "D:\SLH_MASTER_BOT\backlog.md") {
-        Write-Host "
->> CURRENT BACKLOG:" -ForegroundColor Magenta
-        Get-Content "D:\SLH_MASTER_BOT\backlog.md" | Where-Object { $_ -match "^- " } | Select-Object -First 5
-    }
-    
-    Write-Host "
->> SMART COMMANDS:" -ForegroundColor White
-    Write-Host " todo   - Edit backlog & Sync to GitHub" -ForegroundColor Green
-    Write-Host " st     - System Status (Local + Cloud)"
-    Write-Host " deploy - Push all changes to Railway"
-    Write-Host " reload - Refresh this Dashboard"
-    Write-Host " ---------------------------------------------------------"
+﻿function prompt { "🚀 [SLH-MASTER] $((Split-Path -Leaf $pwd)) > " }
+function st { railway status }
+function reload { . $profile }
+
+function power {
+    Write-Host "`n📊 PRODUCTIVITY REPORT (Since Midnight)" -ForegroundColor Cyan
+    $commits = git log --since="midnight" --oneline
+    if ($commits) { $commits } else { Write-Host "No commits today yet." -ForegroundColor Gray }
+    Write-Host "---------------------------------------"
+    $done = Select-String -Path "TODO.md" -Pattern "\[x\]"
+    Write-Host "Tasks completed: $($done.Count)" -ForegroundColor Green
 }
 
-function todo {
-    Write-Host ">> Opening Backlog..." -ForegroundColor Cyan
-    notepad "D:\SLH_MASTER_BOT\backlog.md"
-    Write-Host ">> Syncing changes to GitHub..." -ForegroundColor Yellow
-    git add "D:\SLH_MASTER_BOT\backlog.md"
-    git commit -m "v2.2: Backlog updated at 12:14" --allow-empty
-    git push origin main
-    Write-Host "OK: Backlog Synced." -ForegroundColor Green
-    Show-SLH-Dashboard
+function snapshot {
+    $date = Get-Date -Format "yyyy-MM-dd_HHmm"
+    $path = "D:\SLH_MASTER_BOT\snapshots"
+    if (!(Test-Path $path)) { New-Item $path -ItemType Directory }
+    git status > "$path\snapshot_$date.txt"
+    Write-Host "✅ System state captured in snapshots/ folder." -ForegroundColor Green
 }
 
-function st {
-    Write-Host "
->> LOCAL DOCKER STATUS:" -ForegroundColor Cyan
-    docker ps --format "table {{.Names}}\t{{.Status}}"
-    Write-Host "
->> RAILWAY CLOUD STATUS:" -ForegroundColor Yellow
-    railway status
-}
+function todo { notepad D:\SLH_MASTER_BOT\TODO.md }
 
-function reload { . "D:\SLH_MASTER_BOT\slh-cli.ps1" }
+# תצוגת פתיחה לסוכן
+Clear-Host
+Write-Host @"
+  ██████  ██      ██   ██ 
+ ██       ██      ██   ██ 
+  █████   ██      ███████ 
+      ██  ██      ██   ██ 
+ ██████   ███████ ██   ██  v7.5 MASTER-CONTROL
+ ---------------------------------------------------------
+ [ OWNER: OSIF ] | [ STATUS: MODULAR TRANSITION ]
+ ---------------------------------------------------------
+ COMMANDS:
+  st       - View Railway & Local Status
+  power    - Daily summary (Commits/Tasks)
+  snapshot - Backup current system state
+  todo     - Edit the task list
+  reload   - Refresh CLI after changes
 
-# Auto-start dashboard
-Show-SLH-Dashboard
+ AGENT ONBOARDING:
+  1. Always work in D:\SLH_MASTER_BOT
+  2. Use 'todo' to see pending tasks.
+  3. Deploy via 'git push' (Railway auto-builds).
+  4. Check health with 'railway logs'.
+ ---------------------------------------------------------
+"@ -ForegroundColor Cyan

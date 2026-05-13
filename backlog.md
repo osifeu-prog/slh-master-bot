@@ -1,5 +1,6 @@
-- [ ] HEALTH CHECK: Run 'st' and verify all Railway services are 'Online'.
-- [ ] REDIS CONNECT: Verify Master Bot can read/write to redis-volume.
-- [ ] DATABASE SYNC: Ensure FastAPI is successfully querying PostgreSQL.
-- [ ] CLEAN DEPLOY: Resolve 'os error 32' to allow code updates.
-- [ ] FINAL REPORT: Generate full system audit for tomorrow.
+﻿# SLH ECOSYSTEM BACKLOG - רעיונות ושיפורים עתידיים
+- [ ] הוספת /todo בבוט שמציג את התוכן של TODO.md
+- [ ] שילוב webhook שיפעיל בנייה אוטומטית ב‑Railway בכל push ל‑GitHub
+- [ ] יצירת דוח יומי אוטומטי (/daily) שיסכם משימות שהושלמו
+- [ ] הוספת תמיכה ב‑i18n (עברית/אנגלית) לבוט
+- [ ] חיבור ל‑Plane.so או n8n לניהול משימות מתקדם
