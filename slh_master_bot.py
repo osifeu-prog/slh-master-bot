@@ -7,7 +7,8 @@ from aiogram.types import Message
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 import redis as redis_lib
-from handlers import menu`nfrom handlers import agent
+from handlers import menu
+from handlers import agent
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(levelname)s | %(message)s')
 log = logging.getLogger(__name__)
