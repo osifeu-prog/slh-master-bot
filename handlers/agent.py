@@ -23,6 +23,11 @@ async def cmd_log(message: types.Message):
         })
         log_file.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
         await message.answer(f"📝 Logged: {text}")
+        # XP
+        from slh_master_bot import r
+        user_id = str(message.from_user.id)
+        r.hincrby(f"user:{user_id}:xp", "xp", 5)
+        r.hincrby(f"user:{user_id}:stats", "logs_count", 1)
     except Exception as e:
         await message.answer(f"⚠️ Failed: {e}")
 
@@ -36,22 +41,12 @@ async def cmd_doctor(message: types.Message):
     if todo_path.exists():
         lines = todo_path.read_text(encoding="utf-8").splitlines()
         pending = [l for l in lines if "- [ ]" in l][:3]
-        todo_preview = "\n".join(f"  • {l.split('- [ ]')[-1].strip()}" for l in pending)
-    log_file = BASE_DIR / "session_log.json"
-    last_action = "None"
-    if log_file.exists():
-        try:
-            data = json.loads(log_file.read_text(encoding="utf-8"))
-            if data and data[-1].get("actions"):
-                last_action = data[-1]["actions"][-1].get("action", "?")
-        except:
-            last_action = "Error"
+        todo_preview = "\n".join(f"• {l.split('- [ ]')[-1].strip()}" for l in pending)
     await message.answer(
         f"🩺 *SLH System Health*\n\n"
-        f"• Redis: {redis_status}\n"
-        f"• TODO.md: {todo_status}\n"
-        f"• Pending tasks:\n{todo_preview if todo_preview else '  None'}\n"
-        f"• Last action: {last_action}",
+        f"Redis: {redis_status}\n"
+        f"TODO.md: {todo_status}\n"
+        f"Pending:\n{todo_preview if todo_preview else 'None'}",
         parse_mode="Markdown"
     )
 
