@@ -1,4 +1,6 @@
-﻿import os, requests, redis
+﻿import os
+import requests
+import redis
 from datetime import datetime
 from aiogram import Router, types
 from aiogram.filters import Command
