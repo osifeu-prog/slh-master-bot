@@ -22,7 +22,7 @@ async def cmd_log(message: types.Message):
             "action": f"[Telegram] {text}"
         })
         log_file.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-        await message.answer(f"📝 Logged: {text}")
+        await message.answer(f"📝 Logged: {text}")`n    # Add XP for logging`n    from slh_master_bot import r`n    r.hincrby(f"user:{str(message.from_user.id)}:xp", "xp", 5)`n    r.hincrby(f"user:{str(message.from_user.id)}:stats", "logs_count", 1)
     except Exception as e:
         await message.answer(f"⚠️ Failed: {e}")
 

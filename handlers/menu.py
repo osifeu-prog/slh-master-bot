@@ -124,4 +124,4 @@ async def call_help(callback: types.CallbackQuery):
         "`/containers`, `/ps`, `/logs`, `/restart`, `/deploy` (admin)",
         parse_mode="Markdown"
     )
-    await callback.answer()
+    await callback.answer()`n`n@router.callback_query(F.data == "run_leaderboard")`nasync def call_leaderboard(callback: types.CallbackQuery):`n    from handlers.xp import cmd_leaderboard`n    await cmd_leaderboard(callback.message)`n    await callback.answer()`n`n@router.callback_query(F.data == "run_mystats")`nasync def call_mystats(callback: types.CallbackQuery):`n    from handlers.xp import cmd_mystats`n    await cmd_mystats(callback.message)`n    await callback.answer()
