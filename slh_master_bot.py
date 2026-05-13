@@ -31,7 +31,16 @@ dp = Dispatcher()
 # Redis
 r = None
 try:
-    r = redis_lib.Redis.from_url(REDIS_URL, decode_responses=True, socket_timeout=5)
+    
+r = None
+try:
+    REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+    r = redis_lib.from_url(REDIS_URL, decode_responses=True, socket_timeout=8, socket_connect_timeout=8)
+    r.ping()
+    log.info("✅ Redis Connected Successfully")
+except Exception as e:
+    log.warning(f"Redis not available: {e}")
+
     r.ping()
     log.info("✅ Redis Connected")
 except:
@@ -580,6 +589,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
