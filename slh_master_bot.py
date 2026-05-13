@@ -2,6 +2,7 @@
 import logging
 import os
 import sys
+from datetime import datetime
 
 sys.path.append(os.getcwd())
 
@@ -15,7 +16,7 @@ import redis as redis_lib
 
 from handlers import menu
 from handlers import agent
-from handlers import xp   # XP System
+from handlers import xp
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(levelname)s | %(message)s')
 log = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ def init_redis():
             return r
         except Exception as e:
             log.warning(f"Redis failed: {e}")
+    log.warning("⚠️ Redis not available")
     return None
 
 r = init_redis()
