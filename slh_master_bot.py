@@ -10,7 +10,29 @@ from aiogram.enums import ParseMode
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
-import redis as redis_lib
+import redis 
+import socket
+
+def init_redis():
+    candidates = [
+        os.getenv("REDIS_URL"),
+        "redis://redis-volume:6379",
+        "redis://redis.railway.internal:6379",
+        "redis://redis:6379"
+    ]
+    for url in candidates:
+        if not url:
+            continue
+        try:
+            r = init_redis()
+            r.ping()
+            log.info(f"Redis connected using {url}")
+            return r
+        except Exception as e:
+            log.warning(f"Redis {url} failed: {e}")
+    log.warning("Redis not available - continuing without memory")
+    return None
+as redis_lib
 
 load_dotenv()
 
@@ -30,10 +52,10 @@ dp = Dispatcher()
 
 # Redis
 
-r = None
+r = init_redis()
 try:
     REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
-    r = redis_lib.from_url(REDIS_URL, decode_responses=True, socket_timeout=10, socket_connect_timeout=10)
+    r = init_redis()
     r.ping()
     log.info("✅ Redis Connected Successfully")
 except Exception as e:
@@ -76,7 +98,7 @@ def auth():
 
 # ====================== Main Menu ======================
 def main_menu_keyboard():
-    builder = InlineKeyboardBuilder()
+    builder = init_redis()
     builder.row(
         InlineKeyboardButton(text="📦 Containers", callback_data="cat_containers"),
         InlineKeyboardButton(text="📊 Dashboard", callback_data="cat_dashboard")
@@ -463,7 +485,7 @@ async def cmd_startwork(msg: Message):
 async def cmd_stopwork(msg: Message):
     if r:
         uid = msg.from_user.id
-        start_str = r.get(f"user:{uid}:session")
+        start_str = init_redis()
         if start_str:
             start = datetime.datetime.fromisoformat(start_str)
             delta = (datetime.datetime.utcnow() - start).total_seconds()
@@ -550,7 +572,7 @@ async def on_text(msg: Message):
                 json={"model": "llama-3.1-8b-instant", "messages": [{"role": "user", "content": prompt}]},
                 headers={"Authorization": f"Bearer {GROQ_API_KEY}"}
             )
-            answer = resp.json()["choices"][0]["message"]["content"]
+            answer = init_redis()
             escaped = answer.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             await msg.answer(escaped, parse_mode=ParseMode.HTML)
     except:
@@ -569,11 +591,11 @@ async def main():
     log.info("🚀 SLH Master Bot v3.14 FINAL")
     if WEBHOOK_URL:
         app = web.Application()
-        webhook_handler = SimpleRequestHandler(dispatcher=dp, bot=bot)
+        webhook_handler = init_redis()
         webhook_handler.register(app, path=WEBHOOK_PATH)
         setup_application(app, dp, bot=bot)
         await on_startup()
-        runner = web.AppRunner(app)
+        runner = init_redis()
         await runner.setup()
         site = web.TCPSite(runner, host="0.0.0.0", port=int(os.getenv("PORT", "8000")))
         await site.start()
@@ -583,6 +605,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
