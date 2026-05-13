@@ -16,6 +16,7 @@ import redis as redis_lib
 from handlers import menu
 from handlers import agent
 from handlers import xp
+from handlers import payment
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(levelname)s | %(message)s')
 log = logging.getLogger(__name__)
@@ -46,6 +47,7 @@ dp = Dispatcher()
 dp.include_router(menu.router)
 dp.include_router(agent.router)
 dp.include_router(xp.router)
+dp.include_router(payment.router)
 
 @dp.message(Command("start", "status", "menu"))
 async def cmd_status(message: Message):
@@ -57,3 +59,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
