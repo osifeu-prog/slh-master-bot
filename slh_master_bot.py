@@ -15,7 +15,8 @@ import redis as redis_lib
 
 from handlers import menu
 from handlers import agent
-from handlers import xp, legacy
+from handlers import xp
+from handlers import legacy, legacy
 from handlers import payment
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(levelname)s | %(message)s')
@@ -60,5 +61,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
