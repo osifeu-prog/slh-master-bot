@@ -2,7 +2,6 @@
 import logging
 import os
 import sys
-from datetime import datetime
 
 sys.path.append(os.getcwd())
 
@@ -48,7 +47,7 @@ dp.include_router(menu.router)
 dp.include_router(agent.router)
 dp.include_router(xp.router)
 
-@dp.message(Command("start", "status"))
+@dp.message(Command("start", "status", "menu"))
 async def cmd_status(message: Message):
     await message.answer("🟢 <b>SLH Master Bot v8.0</b> - Online\nEcosystem: DILIGENT-RADIANCE", parse_mode=ParseMode.HTML)
 
