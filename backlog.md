@@ -1,1 +1,5 @@
-משימה להיום - שכמה שיותר מהמערכת יעבוד ושיהיה לי דוח סטטוס מדוייק מלא ומוכן למחר.
+- [ ] HEALTH CHECK: Run 'st' and verify all Railway services are 'Online'.
+- [ ] REDIS CONNECT: Verify Master Bot can read/write to redis-volume.
+- [ ] DATABASE SYNC: Ensure FastAPI is successfully querying PostgreSQL.
+- [ ] CLEAN DEPLOY: Resolve 'os error 32' to allow code updates.
+- [ ] FINAL REPORT: Generate full system audit for tomorrow.
