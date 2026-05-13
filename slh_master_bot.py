@@ -29,21 +29,15 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
 # Redis
-r = None
-try:
-    
+
 r = None
 try:
     REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
-    r = redis_lib.from_url(REDIS_URL, decode_responses=True, socket_timeout=8, socket_connect_timeout=8)
+    r = redis_lib.from_url(REDIS_URL, decode_responses=True, socket_timeout=10, socket_connect_timeout=10)
     r.ping()
     log.info("✅ Redis Connected Successfully")
 except Exception as e:
     log.warning(f"Redis not available: {e}")
-
-    r.ping()
-    log.info("✅ Redis Connected")
-except:
     log.warning("Redis not available")
 
 # ====================== Helpers ======================
@@ -589,6 +583,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
