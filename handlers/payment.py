@@ -27,4 +27,4 @@ async def successful_payment(message: types.Message):
     user_id = str(message.from_user.id)
     r.set(f"user:{user_id}:premium", "true", ex=30*24*3600)
     r.hset(f"user:{user_id}:stats", "premium_since", str(datetime.now()))
-    await message.answer("✅ אתה עכשיו Premium Member!\nXP ×2 + פיצ'רים נוספים\nשלח /mystats", parse_mode=ParseMode.MARKDOWN)
+    await message.answer("✅ אתה עכשיו **Premium**!\nXP ×2 + פיצ'רים\n/mystats", parse_mode=ParseMode.MARKDOWN)
