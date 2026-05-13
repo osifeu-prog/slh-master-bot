@@ -28,14 +28,14 @@ dp = Dispatcher()
 # ???? ?? ?-handlers
 from handlers import admin, agent, audit, legacy, menu, payment, sales, xp, osif, xp, audit
 
-dp.include_router(admin.router)
+print("? registering admin router"); dp.include_router(admin.router)
 dp.include_router(agent.router)
-dp.include_router(audit.router)
+print("? registering audit router"); dp.include_router(audit.router)
 dp.include_router(legacy.router)
 dp.include_router(menu.router)
 dp.include_router(payment.router)
 dp.include_router(sales.router)
-dp.include_router(xp.router)
+print("? registering xp router"); dp.include_router(xp.router)
 dp.include_router(osif.router)
 
 # ????? start
@@ -64,3 +64,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
