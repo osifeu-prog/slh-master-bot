@@ -1,12 +1,30 @@
 ﻿import asyncio
+
+from handlers import menu
 import logging
+
+from handlers import menu
 import os
+
+from handlers import menu
 import redis as redis_lib
+
+from handlers import menu
 import sys
+
+from handlers import menu
 from aiogram import Bot, Dispatcher
+
+from handlers import menu
 from aiogram.filters import Command
+
+from handlers import menu
 from aiogram.types import Message
+
+from handlers import menu
 from aiogram.enums import ParseMode
+
+from handlers import menu
 from aiogram.client.default import DefaultBotProperties
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(levelname)s | %(message)s')
@@ -33,6 +51,8 @@ if not TOKEN:
     sys.exit(1)
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
+
+dp.include_router(menu.router)
 
 @dp.message(Command("start", "status"))
 async def cmd_status(message: Message):
