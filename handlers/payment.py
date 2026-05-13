@@ -9,7 +9,7 @@ router = Router()
 async def cmd_buy(message: types.Message):
     await message.answer_invoice(
         title="SLH Premium - 1 חודש",
-        description="XP ×2 + התראות מחיר + פקודות פרימיום",
+        description="XP 2 + התראות מחיר + פקודות פרימיום + עדיפות",
         payload="premium_1month",
         currency="XTR",
         prices=[types.LabeledPrice(label="SLH Premium Monthly", amount=50)],
@@ -27,4 +27,4 @@ async def successful_payment(message: types.Message):
     user_id = str(message.from_user.id)
     r.set(f"user:{user_id}:premium", "true", ex=30*24*3600)
     r.hset(f"user:{user_id}:stats", "premium_since", str(datetime.now()))
-    await message.answer("✅ אתה עכשיו **Premium**!\nXP ×2 + פיצ'רים\n/mystats", parse_mode=ParseMode.MARKDOWN)
+    await message.answer("✅ **תשלום התקבל!**\nאתה עכשיו Premium Member!\nXP 2 + פיצ'רים\nשלח /mystats", parse_mode=ParseMode.MARKDOWN)
