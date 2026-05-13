@@ -8,24 +8,29 @@ router = Router()
 
 def main_menu_keyboard():
     builder = InlineKeyboardBuilder()
-    builder.row(types.InlineKeyboardButton(text="🛒 קנה Premium עכשיו (50 Stars)", callback_data="buy_premium"))
-    builder.row(types.InlineKeyboardButton(text="📊 My Stats", callback_data="run_mystats"))
-    builder.row(types.InlineKeyboardButton(text="🩺 Status", callback_data="run_doctor"))
-    builder.row(types.InlineKeyboardButton(text="💡 Help", callback_data="run_help"))
+    builder.row(
+        types.InlineKeyboardButton(text="🛒 Premium (50 Stars)", callback_data="buy_premium"),
+        types.InlineKeyboardButton(text="📊 My Stats", callback_data="run_mystats")
+    )
+    builder.row(
+        types.InlineKeyboardButton(text="💰 IDO", callback_data="run_ido"),
+        types.InlineKeyboardButton(text="⚠️ Risks", callback_data="run_risks")
+    )
+    builder.row(
+        types.InlineKeyboardButton(text="📅 Vesting", callback_data="run_vesting"),
+        types.InlineKeyboardButton(text="🩺 Status", callback_data="run_doctor")
+    )
+    builder.row(
+        types.InlineKeyboardButton(text="📋 TODO", callback_data="run_todo"),
+        types.InlineKeyboardButton(text="💡 Help", callback_data="run_help")
+    )
     return builder.as_markup()
 
 @router.message(Command("start", "menu"))
 async def cmd_start(message: types.Message):
     await message.answer(
-        "🚀 <b>ברוך הבא ל-SLH Master Control</b>\n\n"
-        "✅ חינם: XP, TODO, זיכרון\n\n"
-        "🔥 <b>Premium  50 Stars לחודש</b>\n"
-        "• XP ×2\n"
-        "• התראות מחיר חיות\n"
-        "• ניהול תיק השקעות\n"
-        "• גישה לקבוצת ייעוץ\n"
-        "• עדיפות + תמיכה\n\n"
-        "<b>מבצע:</b> 3 הראשונים  50% הנחה!",
+        "🚀 <b>SLH Master Bot v8.0</b>\n\n"
+        "ברוך הבא! בחר קטגוריה:",
         parse_mode=ParseMode.HTML,
         reply_markup=main_menu_keyboard()
     )
