@@ -26,25 +26,17 @@ bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTM
 dp = Dispatcher()
 
 # ???? ?? ?-handlers
-from handlers.admin import router as admin_router
-from handlers.agent import router as agent_router
-from handlers.audit import router as audit_router
-from handlers.legacy import router as legacy_router
-from handlers.menu import router as menu_router
-from handlers.payment import router as payment_router
-from handlers.sales import router as sales_router
-from handlers.xp import router as xp_router
-from handlers.osif import router as osif_router
+from handlers import admin, agent, audit, legacy, menu, payment, sales, xp, osif, xp, audit
 
-print("? registering admin router"); dp.include_router(admin_router)
-dp.include_router(agent_router)
-print("? registering audit router"); dp.include_router(audit_router)
-dp.include_router(legacy_router)
-dp.include_router(menu_router)
-dp.include_router(payment_router)
-dp.include_router(sales_router)
-print("? registering xp router"); dp.include_router(xp_router)
-dp.include_router(osif_router)
+dp.include_router(admin.router)
+dp.include_router(agent.router)
+dp.include_router(audit.router)
+dp.include_router(legacy.router)
+dp.include_router(menu.router)
+dp.include_router(payment.router)
+dp.include_router(sales.router)
+dp.include_router(xp.router)
+dp.include_router(osif.router)
 
 # ????? start
 @dp.message()
@@ -72,5 +64,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
