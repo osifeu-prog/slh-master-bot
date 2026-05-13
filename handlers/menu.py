@@ -29,8 +29,7 @@ def main_menu_keyboard():
 @router.message(Command("start", "menu"))
 async def cmd_start(message: types.Message):
     await message.answer(
-        "🚀 <b>SLH Master Bot v8.0</b>\n\n"
-        "ברוך הבא! בחר קטגוריה:",
+        "🚀 <b>SLH Master Bot v8.0</b>\n\nברוך הבא! בחר קטגוריה:",
         parse_mode=ParseMode.HTML,
         reply_markup=main_menu_keyboard()
     )
