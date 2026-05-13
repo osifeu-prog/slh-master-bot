@@ -17,7 +17,7 @@ load_dotenv()
 TOKEN = os.getenv("MASTER_BOT_TOKEN", "").strip()
 ALLOWED_IDS = [int(x.strip()) for x in os.getenv("ALLOWED_IDS", "224223270,8789977826,1087968824").split(",") if x.strip()]
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-REDIS_URL = os.getenv("REDIS_URL", "redis://slh-redis-v3:6379")
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 FASTAPI_URL = os.getenv("RAILWAY_FASTAPI_URL", "https://slh-fastapi-production.up.railway.app")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")
 WEBHOOK_PATH = "/webhook"
@@ -580,5 +580,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
