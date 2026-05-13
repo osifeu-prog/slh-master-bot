@@ -22,7 +22,7 @@ async def cmd_log(message: types.Message):
             "action": f"[Telegram] {text}"
         })
         log_file.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-        await message.answer(f"📝 Logged: {text}")`n    # Add XP for logging`n    from slh_master_bot import r`n    r.hincrby(f"user:{str(message.from_user.id)}:xp", "xp", 5)`n    r.hincrby(f"user:{str(message.from_user.id)}:stats", "logs_count", 1)
+        await message.answer(f"📝 Logged: {text}")
     except Exception as e:
         await message.answer(f"⚠️ Failed: {e}")
 
@@ -51,9 +51,7 @@ async def cmd_doctor(message: types.Message):
         f"• Redis: {redis_status}\n"
         f"• TODO.md: {todo_status}\n"
         f"• Pending tasks:\n{todo_preview if todo_preview else '  None'}\n"
-        f"• Last action: {last_action}\n"
-        f"• Bot version: v3.14\n"
-        f"• Environment: DILIGENT-RADIANCE",
+        f"• Last action: {last_action}",
         parse_mode="Markdown"
     )
 
@@ -66,7 +64,3 @@ async def cmd_todo(message: types.Message):
     pending = [l for l in todo_path.read_text(encoding="utf-8").splitlines() if "- [ ]" in l][:10]
     text = "\n".join(f"→ {l.replace('- [ ]', '').strip()}" for l in pending) if pending else "All done!"
     await message.answer(f"📋 *Pending tasks*\n{text}", parse_mode="Markdown")
-
-@router.message(Command("status"))
-async def cmd_status(message: types.Message):
-    await message.answer("🟢 SLH Master Bot v3.14 - Online\nEcosystem: DILIGENT-RADIANCE")
