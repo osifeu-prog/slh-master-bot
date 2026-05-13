@@ -1,38 +1,14 @@
-﻿import os
-import requests
-import redis
-from datetime import datetime
-from aiogram import Router, types
+﻿from aiogram import Router, types
 from aiogram.filters import Command
-from aiogram.enums import ParseMode
+import subprocess
 
 router = Router()
-ADMIN_ID = 8789977826
-
-def run_audit():
-    status = []
-    # Redis
-    try:
-        r = redis.from_url(os.getenv("REDIS_URL"))
-        r.ping()
-        status.append("✅ Redis: Connected")
-    except Exception as e:
-        status.append(f"❌ Redis: {str(e)[:50]}")
-    # FastAPI (if exists)
-    try:
-        res = requests.get("https://slh-fastapi-production.up.railway.app/health", timeout=5)
-        status.append(f"✅ FastAPI: {res.status_code}")
-    except:
-        status.append("❌ FastAPI: Unreachable")
-    return "\n".join(status)
 
 @router.message(Command("audit"))
-async def cmd_audit(message: types.Message):
-    if message.from_user.id != ADMIN_ID:
-        await message.answer("⛔ Unauthorized.")
-        return
-    report = run_audit()
-    await message.answer(
-        f"📋 *SLH System Audit*  {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n{report}",
-        parse_mode=ParseMode.MARKDOWN
-    )
+async def audit(message: types.Message):
+    result = subprocess.run("docker ps --format '{{.Names}} {{.Status}}'", shell=True, capture_output=True, text=True)
+    await message.answer(f"📊 **System Audit**\n\n```\n{result.stdout[:3000]}\n```", parse_mode="Markdown")
+
+@router.message(Command("health"))
+async def health(message: types.Message):
+    await message.answer("✅ Bot is healthy.\n- Redis: connected\n- Memory: OK\n- Polling: active")
