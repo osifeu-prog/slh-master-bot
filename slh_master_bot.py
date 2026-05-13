@@ -32,7 +32,9 @@ if not TOKEN:
 
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
-dp.include_router(menu.router)`ndp.include_router(agent.router)
+dp.include_router(menu.router)
+dp.include_router(menu.router
+dp.include_router(agent.router)
 
 @dp.message(Command("start", "status"))
 async def cmd_status(message: Message):
