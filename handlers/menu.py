@@ -17,7 +17,7 @@ def main_menu_keyboard():
         types.InlineKeyboardButton(text="⚠️ Risks", callback_data="run_risks")
     )
     builder.row(
-        types.InlineKeyboardButton(text="📊 My Stats", callback_data="run_mystats"),
+        types.InlineKeyboardButton(text="👤 My Stats", callback_data="run_mystats"),
         types.InlineKeyboardButton(text="🏆 Leaderboard", callback_data="run_leaderboard")
     )
     builder.row(
@@ -27,7 +27,7 @@ def main_menu_keyboard():
 
 @router.message(Command("start", "menu"))
 async def cmd_start(message: types.Message):
-    text = "🚀 *SLH MISSION CONTROL v8.0*\n\nOwner: `OSIF`\nStatus: `Connected`"
+    text = "🚀 *SLH MISSION CONTROL v8.0*\nOwner: `OSIF`\nStatus: `Connected`"
     await message.answer(text, reply_markup=main_menu_keyboard(), parse_mode=ParseMode.MARKDOWN)
 
 @router.callback_query(F.data == "run_doctor")
@@ -56,7 +56,7 @@ async def call_leaderboard(callback: types.CallbackQuery):
 
 @router.callback_query(F.data == "run_ido")
 async def call_ido(callback: types.CallbackQuery):
-    await callback.message.answer("🪙 SLH IDO details...", parse_mode=ParseMode.MARKDOWN)
+    await callback.message.answer("🪙 SLH IDO info...", parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
 
 @router.callback_query(F.data == "run_risks")
@@ -66,5 +66,5 @@ async def call_risks(callback: types.CallbackQuery):
 
 @router.callback_query(F.data == "run_help")
 async def call_help(callback: types.CallbackQuery):
-    await callback.message.answer("📜 Use /menu, /doctor, /mystats, /log etc.", parse_mode=ParseMode.MARKDOWN)
+    await callback.message.answer("📜 Use /menu, /doctor, /mystats etc.", parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
