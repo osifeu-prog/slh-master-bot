@@ -5,14 +5,15 @@ from dotenv import load_dotenv; from bsc_client import get_token_price; from bsc
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.filters import Command
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from aiogram.enums import ParseMode
+from aiogram.types import Message
+from aiogram.enums import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 import redis as redis_lib
 
-# ---------- Redis Connection ----------
+# ---------- Stable Redis ----------
 import os
 import redis as redis_lib
 
@@ -24,25 +25,6 @@ try:
     log.info("✅ Redis Connected Successfully")
 except Exception as e:
     log.warning(f"Redis not available: {e}")
-
-load_dotenv()
-
-TOKEN = os.getenv("MASTER_BOT_TOKEN", "").strip()
-ALLOWED_IDS = [int(x.strip()) for x in os.getenv("ALLOWED_IDS", "224223270,8789977826,1087968824").split(",") if x.strip()]
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
-FASTAPI_URL = os.getenv("RAILWAY_FASTAPI_URL", "https://slh-fastapi-production.up.railway.app")
-WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")
-WEBHOOK_PATH = "/webhook"
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
-log = logging.getLogger(__name__)
-
-bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-dp = Dispatcher()
-
-# Redis
-
 r = None
 try:
     REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
