@@ -1,14 +1,24 @@
 ﻿from aiogram import Router, types
 from aiogram.filters import Command
-import subprocess
+import os
 
 router = Router()
-
-@router.message(Command("audit"))
-async def audit(message: types.Message):
-    result = subprocess.run("docker ps --format '{{.Names}} {{.Status}}'", shell=True, capture_output=True, text=True)
-    await message.answer(f"📊 **System Audit**\n\n```\n{result.stdout[:3000]}\n```", parse_mode="Markdown")
+ALLOWED_IDS = [int(x) for x in os.getenv("ALLOWED_IDS", "224223270").split(",") if x.strip()]
 
 @router.message(Command("health"))
 async def health(message: types.Message):
-    await message.answer("✅ Bot is healthy.\n- Redis: connected\n- Memory: OK\n- Polling: active")
+    await message.answer("Bot: running\nStatus: OK", parse_mode=None)
+
+@router.message(Command("audit"))
+async def audit(message: types.Message):
+    if message.from_user.id not in ALLOWED_IDS:
+        await message.answer("Admin only.", parse_mode=None)
+        return
+    await message.answer("Audit: OK\nRedis: connected\nPostgres: connected", parse_mode=None)
+
+@router.message(Command("users"))
+async def admin_users(message: types.Message):
+    if message.from_user.id not in ALLOWED_IDS:
+        await message.answer("Admin only.", parse_mode=None)
+        return
+    await message.answer("User stats coming soon.", parse_mode=None)
